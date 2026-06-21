@@ -38,9 +38,6 @@
             font-size: 1.8rem;
             font-weight: bold;
             margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
         header p {
@@ -92,6 +89,18 @@
             border-radius: 6px;
             border-left: 3px solid #1a1a1a;
             font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .cutoff-item:hover {
+            background: rgba(26, 26, 26, 0.4);
+            transform: translateX(3px);
+        }
+
+        .cutoff-item.active {
+            background: rgba(26, 26, 26, 0.6);
+            box-shadow: 0 0 10px rgba(26, 26, 26, 0.5);
         }
 
         .cutoff-item strong {
@@ -121,6 +130,11 @@
             transform: translateX(3px);
         }
 
+        .ravito-item.active {
+            background: rgba(57, 255, 143, 0.3);
+            box-shadow: 0 0 10px rgba(57, 255, 143, 0.5);
+        }
+
         .ravito-item strong {
             display: block;
             color: #39ff8f;
@@ -129,6 +143,32 @@
         .ravito-km {
             color: #a0a0a0;
             font-size: 0.8rem;
+        }
+
+        .checkpoint-item {
+            background: rgba(52, 152, 219, 0.08);
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            border-left: 3px solid #3498db;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .checkpoint-item:hover {
+            background: rgba(52, 152, 219, 0.15);
+            transform: translateX(3px);
+        }
+
+        .checkpoint-item.active {
+            background: rgba(52, 152, 219, 0.3);
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+        }
+
+        .checkpoint-item strong {
+            display: block;
+            color: #3498db;
         }
 
         .legend {
@@ -174,33 +214,42 @@
             background: #2a3545;
         }
 
-        .leaflet-popup-content {
-            font-size: 0.85rem !important;
-        }
+        /* RESPONSIVE MOBILE */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.2rem;
+            }
 
-        .popup-button {
-            display: inline-block;
-            margin-top: 8px;
-            padding: 6px 12px;
-            background: #3498db;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: bold;
-            font-size: 0.8rem;
-        }
+            header p {
+                font-size: 0.75rem;
+            }
 
-        .popup-button:hover {
-            background: #2980b9;
-        }
-
-        @media (max-width: 1024px) {
             .content {
                 flex-direction: column;
+                gap: 10px;
+                padding: 10px;
             }
+
+            #map {
+                min-height: 400px;
+                flex: 0 0 auto;
+            }
+
             .sidebar {
                 width: 100%;
-                max-height: 300px;
+                max-height: 50vh;
+                border-radius: 8px 8px 0 0;
+            }
+
+            .sidebar-section h3 {
+                font-size: 0.8rem;
+                margin-bottom: 8px;
+            }
+
+            .cutoff-item, .ravito-item, .checkpoint-item {
+                padding: 8px;
+                margin-bottom: 6px;
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -219,23 +268,23 @@
                 <!-- Barrières Horaires -->
                 <div class="sidebar-section">
                     <h3>⏰ Barrières Horaires</h3>
-                    <div class="cutoff-item">
+                    <div class="cutoff-item" onclick="highlightMarker('barriere-0')">
                         <strong>Praz sur Arly</strong>
                         <span>42.8 km • 11h30</span>
                     </div>
-                    <div class="cutoff-item">
+                    <div class="cutoff-item" onclick="highlightMarker('barriere-1')">
                         <strong>Megève</strong>
                         <span>72.4 km • 14h00</span>
                     </div>
-                    <div class="cutoff-item">
+                    <div class="cutoff-item" onclick="highlightMarker('barriere-2')">
                         <strong>Combloux</strong>
                         <span>105.4 km • 16h30</span>
                     </div>
-                    <div class="cutoff-item">
+                    <div class="cutoff-item" onclick="highlightMarker('barriere-3')">
                         <strong>Sous Col du Jaillet</strong>
                         <span>115.7 km • 18h</span>
                     </div>
-                    <div class="cutoff-item">
+                    <div class="cutoff-item" onclick="highlightMarker('barriere-4')">
                         <strong>Ball trap / Parking des Frasses</strong>
                         <span>132.6 km • 20h</span>
                     </div>
@@ -244,49 +293,70 @@
                 <!-- Ravitaillements -->
                 <div class="sidebar-section">
                     <h3>🍔 Ravitaillements</h3>
-                    <div class="ravito-item">
+                    <div class="ravito-item" onclick="highlightMarker('ravito-0')">
                         <strong>N°1 - Sous col de Jaillet</strong>
                         <span class="ravito-km">15 & 115 km</span>
                     </div>
-                    <div class="ravito-item">
+                    <div class="ravito-item" onclick="highlightMarker('ravito-1')">
                         <strong>N°2 - La Guittaz</strong>
                         <span class="ravito-km">25 km</span>
                     </div>
-                    <div class="ravito-item">
+                    <div class="ravito-item" onclick="highlightMarker('ravito-2')">
                         <strong>N°3 - Praz sur Arly</strong>
                         <span class="ravito-km">43.5 km ⏰</span>
                     </div>
-                    <div class="ravito-item">
+                    <div class="ravito-item" onclick="highlightMarker('ravito-3')">
                         <strong>N°4 - Refuge du petit Tétraz</strong>
                         <span class="ravito-km">52 km</span>
                     </div>
-                    <div class="ravito-item">
+                    <div class="ravito-item" onclick="highlightMarker('ravito-4')">
                         <strong>N°5 - Megéve</strong>
                         <span class="ravito-km">73.5 km ⏰</span>
                     </div>
-                    <div class="ravito-item">
+                    <div class="ravito-item" onclick="highlightMarker('ravito-5')">
                         <strong>N°6 - Plateau de la croix (BBQ!)</strong>
                         <span class="ravito-km">83 km 🍖</span>
                     </div>
-                    <div class="ravito-item">
+                    <div class="ravito-item" onclick="highlightMarker('ravito-6')">
                         <strong>N°7 - Avena Mont D'arbois</strong>
                         <span class="ravito-km">89 km 🏔️</span>
                     </div>
-                    <div class="ravito-item">
+                    <div class="ravito-item" onclick="highlightMarker('ravito-7')">
                         <strong>N°8 - Combloux</strong>
                         <span class="ravito-km">104.5 km ⏰</span>
                     </div>
-                    <div class="ravito-item">
+                    <div class="ravito-item" onclick="highlightMarker('ravito-8')">
                         <strong>N°10 - Mouille Rosse</strong>
                         <span class="ravito-km">122 km</span>
                     </div>
-                    <div class="ravito-item">
+                    <div class="ravito-item" onclick="highlightMarker('ravito-9')">
                         <strong>N°11 - Ball trap / Parking des Frasses</strong>
                         <span class="ravito-km">132 km ⏰</span>
                     </div>
-                    <div class="ravito-item">
-                        <strong>🏁 Parking Palais des Sports</strong>
-                        <span class="ravito-km">≈ 140 km (ARRIVÉE)</span>
+                </div>
+
+                <!-- Checkpoints -->
+                <div class="sidebar-section">
+                    <h3>🛣️ Points Routes</h3>
+                    <div class="checkpoint-item" onclick="highlightMarker('checkpoint-0')">
+                        <strong>Parking Cuchet</strong>
+                        <span class="ravito-km">Fin 1ère portion</span>
+                    </div>
+                    <div class="checkpoint-item" onclick="highlightMarker('checkpoint-1')">
+                        <strong>D909 après la Guiettaz</strong>
+                        <span class="ravito-km">Route</span>
+                    </div>
+                    <div class="checkpoint-item" onclick="highlightMarker('checkpoint-2')">
+                        <strong>Route Panoramique</strong>
+                        <span class="ravito-km">Route</span>
+                    </div>
+                    <div class="checkpoint-item" onclick="highlightMarker('checkpoint-3')">
+                        <strong>Route du Leutaz</strong>
+                        <span class="ravito-km">Grimpette route</span>
+                    </div>
+                    <div class="checkpoint-item" onclick="highlightMarker('checkpoint-4')">
+                        <strong>Croisement boucle 70-100</strong>
+                        <span class="ravito-km">Point clé</span>
                     </div>
                 </div>
 
@@ -307,7 +377,7 @@
                     </div>
                     <div class="legend-item">
                         <div class="legend-color checkpoint"></div>
-                        <span>Checkpoints Routes</span>
+                        <span>Points Routes</span>
                     </div>
                     <div class="legend-item">
                         <div class="legend-color cutoff"></div>
@@ -326,8 +396,12 @@
         const barrieresData = [{"name": "Praz sur Arly", "time": "11h30", "km": "42.8", "lat": 45.83646152506207, "lng": 6.573294997215272}, {"name": "Meg\u00e8ve", "time": "14h00", "km": "72.4", "lat": 45.86089899430677, "lng": 6.619268059730531}, {"name": "Combloux", "time": "16h30", "km": "105.4", "lat": 45.89684813032402, "lng": 6.646310091018678}, {"name": "Sous Col du Jaillet", "time": "18h", "km": "115.7", "lat": 45.878544090364635, "lng": 6.582494974136353}, {"name": "Ball trap/ parking des Frasses", "time": "20h", "km": "132.6", "lat": 45.87061121359373, "lng": 6.5857136249542245}];
         const checkpointsData = [{"name": "Parking Cuchet, fin de la 1ere portion de route", "lat": 45.88864155681031, "lng": 6.622223854064942}, {"name": "D909 apr\u00e8s la Guiettaz", "lat": 45.841813277357716, "lng": 6.506491899490357}, {"name": "Route Panoramique", "lat": 45.82261633675923, "lng": 6.526983976364137}, {"name": "Route du Leutaz, grimpette sur route pendant un moment", "lat": 45.83379666873324, "lng": 6.596329808235169}, {"name": "Croisement parcours boucle 70-100", "lat": 45.87004720419319, "lng": 6.632652282714844}];
 
+        // Stockage des marqueurs pour interaction
+        let markers = {};
+        let map;
+
         // Initialiser la carte
-        const map = L.map('map').setView([45.93, 6.55], 11);
+        map = L.map('map').setView([45.93, 6.55], 11);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap',
@@ -356,21 +430,20 @@
         });
 
         // Ravitaillements en ORANGE
-        ravitosData.forEach(ravito => {
+        ravitosData.forEach((ravito, idx) => {
             const popupText = `
                 <div style="font-size: 0.85rem;">
                     <strong>N°${ravito.num} - ${ravito.name}</strong><br>
                     <span style="color: #a0a0a0;">km ${ravito.km}</span><br>
                     <a href="https://maps.google.com/maps?q=${ravito.lat},${ravito.lng}&z=16" 
                        target="_blank" 
-                       class="popup-button" 
                        style="display: inline-block; margin-top: 8px; padding: 6px 12px; background: #3498db; color: #fff; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 0.75rem;">
-                        🗺️ Itinéraire Google Maps
+                        🗺️ Itinéraire
                     </a>
                 </div>
             `;
 
-            L.circleMarker([ravito.lat, ravito.lng], {
+            const marker = L.circleMarker([ravito.lat, ravito.lng], {
                 radius: 6,
                 fillColor: '#ff6b35',
                 color: '#fff',
@@ -378,6 +451,8 @@
                 opacity: 1,
                 fillOpacity: 0.9
             }).addTo(map).bindPopup(popupText);
+
+            markers['ravito-' + idx] = marker;
         });
 
         // Checkpoints Routes en BLEU
@@ -393,7 +468,7 @@
                 </div>
             `;
 
-            L.circleMarker([checkpoint.lat, checkpoint.lng], {
+            const marker = L.circleMarker([checkpoint.lat, checkpoint.lng], {
                 radius: 6,
                 fillColor: '#3498db',
                 color: '#fff',
@@ -401,10 +476,12 @@
                 opacity: 1,
                 fillOpacity: 0.9
             }).addTo(map).bindPopup(popupText);
+
+            markers['checkpoint-' + idx] = marker;
         });
 
         // Barrières horaires en NOIR
-        barrieresData.forEach(barriere => {
+        barrieresData.forEach((barriere, idx) => {
             const popupText = `
                 <div style="font-size: 0.85rem;">
                     <strong>⏰ ${barriere.name}</strong><br>
@@ -413,7 +490,7 @@
                 </div>
             `;
 
-            L.circleMarker([barriere.lat, barriere.lng], {
+            const marker = L.circleMarker([barriere.lat, barriere.lng], {
                 radius: 7,
                 fillColor: '#1a1a1a',
                 color: '#fff',
@@ -421,7 +498,28 @@
                 opacity: 1,
                 fillOpacity: 0.8
             }).addTo(map).bindPopup(popupText);
+
+            markers['barriere-' + idx] = marker;
         });
+
+        // Fonction pour mettre en avant un marqueur
+        function highlightMarker(markerId) {
+            // Enlever la classe active de tous les marqueurs
+            document.querySelectorAll('.cutoff-item.active, .ravito-item.active, .checkpoint-item.active').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // Ajouter la classe active à l'élément cliqué
+            event.target.closest('.cutoff-item, .ravito-item, .checkpoint-item').classList.add('active');
+
+            // Zoomer sur le marqueur et l'ouvrir
+            if (markers[markerId]) {
+                const marker = markers[markerId];
+                const latlng = marker.getLatLng();
+                map.setView(latlng, 14);
+                marker.openPopup();
+            }
+        }
 
         // Départ & Arrivée
         L.circleMarker([coords[0][0], coords[0][1]], {
