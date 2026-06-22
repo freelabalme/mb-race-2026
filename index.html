@@ -28,9 +28,9 @@
         }
 
         header {
-            background: linear-gradient(135deg, #dc5000 0%, #ff6b35 100%);
+            background: linear-gradient(135deg, #E60000 0%, #FF3333 100%);
             padding: 15px 30px;
-            box-shadow: 0 4px 20px rgba(220, 80, 0, 0.3);
+            box-shadow: 0 4px 20px rgba(230, 0, 0, 0.3);
             z-index: 100;
         }
 
@@ -77,7 +77,7 @@
             font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: #ff6b35;
+            color: #E60000;
             margin-bottom: 12px;
             font-weight: bold;
         }
@@ -115,29 +115,29 @@
         }
 
         .ravito-item {
-            background: rgba(57, 255, 143, 0.08);
+            background: rgba(230, 0, 0, 0.08);
             padding: 10px;
             margin-bottom: 8px;
             border-radius: 6px;
-            border-left: 3px solid #39ff8f;
+            border-left: 3px solid #E60000;
             font-size: 0.85rem;
             cursor: pointer;
             transition: all 0.2s;
         }
 
         .ravito-item:hover {
-            background: rgba(57, 255, 143, 0.15);
+            background: rgba(230, 0, 0, 0.15);
             transform: translateX(3px);
         }
 
         .ravito-item.active {
-            background: rgba(57, 255, 143, 0.3);
-            box-shadow: 0 0 10px rgba(57, 255, 143, 0.5);
+            background: rgba(230, 0, 0, 0.3);
+            box-shadow: 0 0 10px rgba(230, 0, 0, 0.5);
         }
 
         .ravito-item strong {
             display: block;
-            color: #39ff8f;
+            color: #ffffff;
         }
 
         .ravito-km {
@@ -196,7 +196,7 @@
         .legend-color.route { background: #2ecc71; }
         .legend-color.gpx { background: #e74c3c; }
         .legend-color.cutoff { background: #1a1a1a; }
-        .legend-color.ravito { background: #ff6b35; }
+        .legend-color.ravito { background: #E60000; }
         .legend-color.checkpoint { background: #3498db; }
 
         .sidebar::-webkit-scrollbar {
@@ -445,7 +445,7 @@
 
             const marker = L.circleMarker([ravito.lat, ravito.lng], {
                 radius: 6,
-                fillColor: '#ff6b35',
+                fillColor: '#E60000',
                 color: '#fff',
                 weight: 2,
                 opacity: 1,
